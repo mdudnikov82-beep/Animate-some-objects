@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        canvas {
+            border: 1px dashed black;
+        }
+    </style>
+    <title>Document</title>
+</head>
+<body>
+    <div class="canvasContainer">
+        <canvas id="canvas" width="1000" height="1000"></canvas>
+    </div>
+    <div>
+        <button onClick="addBall()">Add Ball</button>
+        <button onClick="clearBalls()">Clear Balls</button>
+    </div>
+    <div>
+        The size of ball: <input type="number" id="ballSize" min="0" max="100" value="20"> maximum: 100
+        <input type="checkbox" id="connectedBalls">Add connected balls
+    </div>
+    <script>
+        let canvas = document.getElementById("canvas");
+        let ctx = canvas.getContext("2d"); // Получаем контекст рисования
+
+
+        let squarePosition = { x: 10, y: 0 };
+        function drawFrame() {
+            // Очистить canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Начать рисование фигуры
+            ctx.beginPath();
+
+            // Нарисовать прямоугольник с линиями
+            ctx.rect(squarePosition.x, squarePosition.y, 10, 10);
+            ctx.strokeStyle = "#109bfc"; // Цвет линий
+            ctx.lineWidth = 1; // Толщина линий
+            ctx.stroke();
+            
+            // Обновляем позицию квадрата
+            squarePosition.x += 2;
+            squarePosition.y += 2;
+            
+            // Повторяем рисование через 20мс
+            setTimeout(drawFrame, 20);
+        }
+
+        // Конструктор шара
+        function Ball(x, y, dx, dy, radius) {
+            this.x = x;
+            this.y = y;
+            this.dx = dx;
+            this.dy = dy;
+            this.radius = radius;
+            this.strokeStyle = "black";
+            this.fillColor = "red";
+        }
+
+        // Массив шаров
+        let balls = []
+
+        function AddBall() {
+            // Получаем радиус из input
+            let radius = parseFloat(document.getElementById("ballSize").value);
+            
+            // Создаем новый шар
+            let ball = new Ball(100, 100, 1, 1, radius);
+
+            // Добавляем шар в массив
+            balls.push(ball);
+        }
+
+        function clearBalls() {
+            balls = [];
+        }        
+
+        window.onload = function() {
+            drawFrame();
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <canvas id="canvas" width="1000" height="1000" id="canvas"></canvas>
+        <button onclick="addRandomCircle()" id="addRandomCircle">Add Random Circle</button>
+        <button onclick="clearCanvas()" id="clearCanvas" id="clearCanvas">Clear Canvas</button>
+    <script>
+        let canvas = document.getElementById("canvas")
+            let ctx = canvas.getContext('2d')
+            function Circle(x, y, radius, color) {
+                this.x = x
+                this.y = y
+                this.radius = radius
+                this.color = color
+                this.isSelected = false
+            }
+
+            function randomFromTo(from, to) {
+                return Math.floor(Math.random() * (to - from) + from)
+            }
+
+            let circle = new Circle(0, 0, 20, 'red')
+            let circles = []
+
+            let isDragging = false
+            function stopDrag() {
+                // Сбрасываем флаг перетаскивания
+                isDragging = false
+            }
+            function dragCircle(e) {
+                if (isDragging == true) {
+                    // Если есть выбранная окружность
+                    if (previousSelectedCircle != null) {
+                        let x = e.pageX - canvas.offsetLeft
+                        let y = e.pageY - canvas.offsetTop
+
+                        // Перемещаем выбранную окружность
+                        previousSelectedCircle.x = x
+                        previousSelectedCircle.y = y
+
+                        // Очищаем холст и перерисовываем все окружности
+                        drawCircles()
+                    }
+                }
+            }
+            function drawCircles() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height)
+                for (let i = 0; i < circles.length; i++) {
+                    let circle = circles[i]
+                    ctx.globalAlpha = 0.5
+                    ctx.beginPath()
+                    ctx.arc(circle.x, circle.y, circle.radius, 0, Math.PI * 2)
+                    ctx.fillStyle = circle.color
+                    ctx.strokeStyle = "black"
+                    if (circle.isSelected) {
+                        ctx.lineWidth = 5
+                    } else {
+                        ctx.lineWidth = 1
+                    }
+                    ctx.fill()
+                    ctx.stroke()
+                }
+            }
+
+
+            function addRandomCircle() {
+                let radius = randomFromTo(10, 60)
+                let x = randomFromTo(0, canvas.width)
+                let y = randomFromTo(0, canvas.height)
+                let colors = ['red', 'green', 'blue', 'yellow', 'purple', 'orange', 'pink', 'brown', 'gray', 'black']
+                let color = colors[randomFromTo(0, colors.length - 1)]
+                let circle = new Circle(x, y, radius, color)
+                circles.push(circle)
+                drawCircles()
+            }
+
+            function clearCanvas() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height)
+                circles = []
+                drawCircles()
+            }
+
+            let previousSelectedCircle;
+
+            function canvasClick(e) {
+                // Получаем координаты клика относительно canvas
+                let clickX = e.pageX - canvas.offsetLeft;
+                let clickY = e.pageY - canvas.offsefTop;
+
+                // Ищем круг, в который попал клик
+                for (let i = circles.length - 1; i >= 0; i--) {
+                    let circle = circles[i];
+
+                    // Вычисляем расстояние от центра круга до точки клика
+                    // Формула расстояния между двумя точками: √[(x2-x1)² + (y2-y1)²]
+                    let distanceFromCenter = Math.sqrt(Math.pow(circle.x - clickX, 2) + Math.pow(circle.y - clickY, 2));
+
+                    // Если расстояние меньше или равно радиусу, то клик попал в круг
+                    if (distanceFromCenter <= circle.radius) {
+                        if (previousSelectedCircle != null) { // Снимаем выделение с предыдущего круга
+                            previousSelectedCircle.isSelected = false;
+                            previousSelectedCircle = circle;
+                        }
+                        // Выделяем выбранный круг
+                        circle.isSelected = true;
+                        drawCircles();
+
+                        // Устанавливаем флаг перетаскивания
+                        isDragging = true;
+                        // Прерываем цикл, так как мы нашли круг
+                        return;
+                    }
+                }
+            }
+
+            window.onload = function() {
+                // Определение canvas и контекста рисования
+                canvas = document.getElementById("canvas");
+                ctx = canvas.getContext("2d");
+
+                // Обработчик клика по canvas
+                canvas.onclick = canvasClick;
+                canvas.onmousedown = canvasClick;
+                canvas.onmouseup = stopDrag;
+                canvas.onmousemove = dragCircle;
+            }
+        </script>
+</body>
+</html>
