@@ -65,7 +65,7 @@
                     // Если шар находится в пределах canvas по оси Y, то увеличиваем скорость падения
                     if ((ball.y) < canvas.height) ball.dy += 0.22
                     // ball.dx *= 0.998
-                    ball.x = ball.dx * 0.998
+                    ball.dx = ball.dx * 0.998
                     // Проверяем, не вышел ли шар за границы canvas по оси 
                     if ((ball.x + ball.radius > canvas.width) || (ball.x - ball.radius < 0)) {
                         ball.dx = -ball.dx;
@@ -82,17 +82,17 @@
                         ctx.fillStyle = ball.fillColor;
                     } else {
                         // Если чекбокс отмечен, используем белый цвет
-                        ctx.fillstyle = "white";
+                        ctx.fillStyle = "white";
                     }
+                    // Нарисовать круг с линиями
+                    ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
+                    ctx.lineWidth = 1; // Толщина линий
+                    ctx.fill()
+                    ctx.stroke();
                 }
-                // Нарисовать круг с линиями
-                ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
-                ctx.lineWidth = 1; // Толщина линий
-                ctx.fill()
-                ctx.stroke();
-                
+
                 // Повторяем рисование через 20мс
-                setTimeout(drawFrame, 20);
+                setTimeout("drawFrame()", 20);
             }
 
         // Конструктор шара
