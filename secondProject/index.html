@@ -19,7 +19,7 @@
         <button onClick="clearBalls()">Clear Balls</button>
     </div>
     <div>
-        The size of ball: <input type="number" id="ballSize" min="0" max="100" value="20"> maximum: 100
+        The size of ball: <input type="number" id="ballSize" min="0" max="500" value="20"> maximum: 500
         <input type="checkbox" id="connectedBalls">Add connected balls
     </div>
     <script>
@@ -27,7 +27,7 @@
         let ctx = canvas.getContext("2d"); // Получаем контекст рисования
 
 
-        let squarePosition = { x: 10, y: 0 };
+        let squarePosition = { x: 90, y: 0 };
         // function drawFrame() {
         //     // Очистить canvas
         //     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -132,7 +132,7 @@
             for (let i in balls) {
                 let ball = balls[i];
 
-                if ((clickX > (ball.x-ball.radius.radius)) && (clickX <(ball.x+ball.radius))) {
+                if ((clickX > (ball.x-ball.radius)) && (clickX <(ball.x+ball.radius))) {
                     // Если кликнули на шар, то проверяем по оси Y
                     if ((clickY > (ball.y-ball.radius)) && (clickY <(ball.y+ball.radius))) {
                         // Если кликнули на шар, то изменяем его скорость
