@@ -109,7 +109,7 @@
         // Массив шаров
         let balls = []
 
-        function AddBall() {
+        function addBall() {
             // Получаем радиус из input
             let radius = parseFloat(document.getElementById("ballSize").value);
             
@@ -120,12 +120,33 @@
             balls.push(ball);
         }
 
+
         function clearBalls() {
             balls = [];
         }        
 
+        function canvasClick(e) {
+            let clickX = e.pageX - canvas.offsetLeft;
+            let clickY = e.pageY - canvas.offsetTop;
+
+            for (let i in balls) {
+                let ball = balls[i];
+
+                if ((clickX > (ball.x-ball.radius.radius)) && (clickX <(ball.x+ball.radius))) {
+                    // Если кликнули на шар, то проверяем по оси Y
+                    if ((clickY > (ball.y-ball.radius)) && (clickY <(ball.y+ball.radius))) {
+                        // Если кликнули на шар, то изменяем его скорость
+                        ball.dx -= 2;
+                        ball.dy -= 3;
+                        return; // Выходим из функции, чтобы не проверять остальные шары
+                    }
+                }
+            }
+        }
+
         window.onload = function() {
             drawFrame();
+            canvas.onmousedown = canvasClick;
         }
     </script>
 </body>
