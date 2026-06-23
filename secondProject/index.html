@@ -12,7 +12,7 @@
 </head>
 <body>
     <div class="canvasContainer">
-        <canvas id="canvas" width="1000" height="1000"></canvas>
+        <canvas id="canvas" width="2000" height="2000"></canvas>
     </div>
     <div>
         <button onClick="addBall()">Add Ball</button>
@@ -27,7 +27,7 @@
         let ctx = canvas.getContext("2d"); // Получаем контекст рисования
 
 
-        let squarePosition = { x: 90, y: 0 };
+        let squarePosition = { x: 90, y: 10 };
         // function drawFrame() {
         //     // Очистить canvas
         //     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -114,7 +114,7 @@
             let radius = parseFloat(document.getElementById("ballSize").value);
             
             // Создаем новый шар
-            let ball = new Ball(100, 100, 1, 1, radius);
+            let ball = new Ball(radius, radius, 1, 1, radius);
 
             // Добавляем шар в массив
             balls.push(ball);
